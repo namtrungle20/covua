@@ -1,4 +1,4 @@
-import 'package:covua/game.dart';
+import 'package:covua/screens/game.dart';
 import 'package:flutter/material.dart';
 
 void main() {
