@@ -1,196 +1,171 @@
 KẾ HOẠCH XÂY DỰNG GAME CỜ VUA
-1.	**Thiết kế tổng quan**
-- **Mục tiêu**: 
-  - Tạo game cờ vua với giao diện thân thiện.
-  - Hỗ trợ chơi offline với AI.
-  - Hỗ trợ chơi online với người khác.
-  - Sử dụng kiến trúc hiện đại và quản lý trạng thái với Provider.
+Dưới đây là một kế hoạch chi tiết để phát triển một game cờ vua bằng Flutter sử dụng kiến trúc modern BLoC:
 
-2.	**Cài đặt và thiết lập môi trường**
-Đảm bảo rằng bạn đã cài đặt Flutter và thiết lập môi trường phát triển. Nếu chưa, bạn có thể tham khảo tài liệu chính thức của Flutter để cài đặt và thiết lập: [Flutter Documentation](https://flutter.dev/docs/get-started/install).
+### 1. Lập Kế Hoạch và Thiết Kế
 
-3.	**Tạo dự án Flutter mới**
-Tạo một dự án Flutter mới:
-```
-flutter create chess_game
-cd chess_game
-```
+#### 1.1. Yêu Cầu Chức Năng
+- **Chơi với AI**: Tích hợp AI để người dùng có thể chơi với máy.
+- **Chơi với người chơi khác**: Hỗ trợ chơi online và offline (chơi trên cùng một thiết bị).
+- **Hệ thống xếp hạng**: Tạo hệ thống xếp hạng cho người chơi.
+- **Lưu và tải lại ván cờ**: Cho phép người chơi lưu lại ván cờ đang chơi dở và tải lại sau.
+- **Tính năng chat**: Cho phép người chơi chat với nhau khi chơi online.
 
-4.	**Cài đặt các gói cần thiết**
-Thêm các gói cần thiết vào `pubspec.yaml`:
-```
-dependencies:
-  flutter:
-    sdk: flutter
-  provider: ^6.0.0
-  http: ^0.13.3  # Dùng cho phần chơi online
-  # Các gói khác nếu cần
-```
+#### 1.2. Thiết Kế Giao Diện
+- **Màn hình chính**: Chứa các lựa chọn như chơi với AI, chơi online, xem xếp hạng, v.v.
+- **Màn hình chơi cờ**: Hiển thị bàn cờ và các quân cờ, cùng với các nút điều khiển cần thiết.
+- **Màn hình xếp hạng**: Hiển thị bảng xếp hạng của người chơi.
+- **Màn hình chat**: Giao diện chat khi chơi online.
 
-5.	**Cấu trúc dự án**
-- **lib**: Chứa mã nguồn chính.
-  - **main.dart**: Điểm khởi đầu của ứng dụng.
-  - **models**: Chứa các lớp dữ liệu (ví dụ: quân cờ, bàn cờ).
-  - **screens**: Chứa các màn hình UI.
-  - **providers**: Chứa các lớp Provider để quản lý trạng thái.
-  - **widgets**: Chứa các widget tùy chỉnh.
-  - **services**: Chứa các dịch vụ (ví dụ: AI service, online service).
+### 2. Cấu Trúc Dự Án
 
-6.	**Phát triển các lớp dữ liệu**
-Tạo các lớp dữ liệu cho quân cờ và bàn cờ trong thư mục `models`.
+#### 2.1. Thư Mục và Tệp Tin
+- **lib/**
+  - **bloc/**: Chứa các BLoC cho từng phần của ứng dụng.
+    * chess_bloc.dart
+    * auth_bloc.dart
+    * chat_bloc.dart
+    * ranking_bloc.dart
+  - **models/**: Chứa các model (ví dụ: ChessPiece, BoardState).
+    * chess_piece.dart
+    * board_state.dart
+  - **repositories/**: Chứa các lớp để truy cập dữ liệu (API, Database).
+    * chess_repository.dart
+    * auth_repository.dart
+    * chat_repository.dart
+    * ranking_repository.dart
+  - **ui/**: Chứa các widget và màn hình.
+    * home_screen.dart
+    * chess_board_screen.dart
+    * ranking_screen.dart
+    * chat_screen.dart
+  - **utils/**: Chứa các tiện ích và hàm helper.
+    * constants.dart
+    * helpers.dart
+  - **main.dart**: Tệp tin chính để khởi chạy ứng dụng.
 
-**models/piece.dart**:
+### 3. Phát Triển
+
+#### 3.1. Thiết Kế Model
+- **ChessPiece**: Đại diện cho một quân cờ.
+- **BoardState**: Đại diện cho trạng thái của bàn cờ.
+
+#### 3.2. Thiết Kế BLoC
+- **ChessBloc**: Quản lý trạng thái của bàn cờ và các hành động của người chơi.
+- **AuthBloc**: Quản lý xác thực người chơi.
+- **ChatBloc**: Quản lý các tin nhắn chat.
+- **RankingBloc**: Quản lý dữ liệu xếp hạng.
+
+#### 3.3. Phát Triển Giao Diện Người Dùng
+- **Màn hình chính**: Tạo các button điều hướng.
+- **Màn hình chơi cờ**: Vẽ bàn cờ và các quân cờ, xử lý các sự kiện di chuyển quân.
+- **Màn hình xếp hạng**: Hiển thị bảng xếp hạng.
+- **Màn hình chat**: Tạo giao diện chat đơn giản.
+
+#### 3.4. Tích Hợp Chức Năng Chơi Với AI
+- Sử dụng một thư viện cờ vua như [chess](https://pub.dev/packages/chess) để quản lý logic cờ vua.
+- Phát triển AI hoặc tích hợp một thư viện AI cờ vua.
+
+#### 3.5. Tích Hợp Chức Năng Online
+- Sử dụng Firebase hoặc một backend như Node.js để quản lý các trận đấu online và hệ thống xếp hạng.
+- Tích hợp Firebase Firestore hoặc Realtime Database để lưu trữ dữ liệu trận đấu.
+
+### 4. Kiểm Thử và Triển Khai
+
+#### 4.1. Kiểm Thử
+- Viết các unit test cho các BLoC và model.
+- Kiểm tra tích hợp để đảm bảo các phần của ứng dụng hoạt động mượt mà với nhau.
+- Kiểm tra giao diện người dùng để đảm bảo trải nghiệm người dùng tốt.
+
+#### 4.2. Triển Khai
+- Triển khai ứng dụng lên Google Play Store và Apple App Store.
+- Triển khai server backend nếu có sử dụng.
+
+### 5. Bảo Trì và Cập Nhật
+- Theo dõi phản hồi của người dùng và sửa lỗi.
+- Cập nhật và thêm tính năng mới theo yêu cầu của người dùng.
+
+### Mã Mẫu cho ChessBloc
+
 ```dart
-enum PieceType { King, Queen, Rook, Bishop, Knight, Pawn }
-enum Player { White, Black }
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:chess/chess.dart' as chess;
 
-class Piece {
-  final PieceType type;
-  final Player player;
-  bool isCaptured;
+part 'chess_event.dart';
+part 'chess_state.dart';
 
-  Piece(this.type, this.player, {this.isCaptured = false});
+class ChessBloc extends Bloc<ChessEvent, ChessState> {
+  final chess.Chess _chess = chess.Chess();
+
+  ChessBloc() : super(ChessInitial()) {
+    on<MovePieceEvent>((event, emit) {
+      _chess.move({'from': event.from, 'to': event.to});
+      if (_chess.in_checkmate) {
+        emit(ChessCheckmate());
+      } else if (_chess.in_draw) {
+        emit(ChessDraw());
+      } else {
+        emit(ChessMoveMade(_chess.board()));
+      }
+    });
+  }
+
+  void resetGame() {
+    _chess.reset();
+    emit(ChessInitial());
+  }
 }
 ```
 
-**models/board.dart**:
+### chess_event.dart
+
 ```dart
-class Board {
-  final List<List<Piece?>> grid;
+part of 'chess_bloc.dart';
 
-  Board() : grid = List.generate(8, (i) => List.generate(8, (j) => null));
+abstract class ChessEvent extends Equatable {
+  const ChessEvent();
 
-  void initialize() {
-    // Khởi tạo các quân cờ ban đầu trên bàn cờ.
-  }
-
-  bool isValidMove(Piece piece, int startX, int startY, int endX, int endY) {
-    // Kiểm tra nước đi hợp lệ của quân cờ.
-  }
-
-  void movePiece(int startX, int startY, int endX, int endY) {
-    // Di chuyển quân cờ trên bàn cờ.
-  }
-}
-```
-
-7.	**Quản lý trạng thái với Provider**
-Tạo các lớp Provider để quản lý trạng thái của game.
-
-**providers/board_provider.dart**:
-```dart
-import 'package:flutter/material.dart';
-import '../models/board.dart';
-
-class BoardProvider with ChangeNotifier {
-  Board _board = Board();
-
-  Board get board => _board;
-
-  void initializeBoard() {
-    _board.initialize();
-    notifyListeners();
-  }
-
-  void movePiece(int startX, int startY, int endX, int endY) {
-    _board.movePiece(startX, startY, endX, endY);
-    notifyListeners();
-  }
-
-  bool isValidMove(Piece piece, int startX, int startY, int endX, int endY) {
-    return _board.isValidMove(piece, startX, startY, endX, endY);
-  }
-}
-```
-
-8.	### 8. **Phát triển giao diện người dùng**
-Tạo màn hình chính và các widget cho bàn cờ và quân cờ trong thư mục `screens` và `widgets`.
-
-**screens/main_screen.dart**:
-```dart
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/board_provider.dart';
-import '../widgets/board_widget.dart';
-
-class MainScreen extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Cờ Vua'),
-      ),
-      body: Center(
-        child: ChangeNotifierProvider(
-          create: (_) => BoardProvider()..initializeBoard(),
-          child: BoardWidget(),
-        ),
-      ),
-    );
-  }
+  List<Object> get props => [];
 }
-```
 
-**widgets/board_widget.dart**:
-```dart
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/board.dart';
-import '../providers/board_provider.dart';
+class MovePieceEvent extends ChessEvent {
+  final String from;
+  final String to;
 
-class BoardWidget extends StatelessWidget {
+  const MovePieceEvent(this.from, this.to);
+
   @override
-  Widget build(BuildContext context) {
-    final boardProvider = Provider.of<BoardProvider>(context);
-    final board = boardProvider.board;
-
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 8,
-      ),
-      itemBuilder: (context, index) {
-        int x = index % 8;
-        int y = index ~/ 8;
-        Piece? piece = board.grid[y][x];
-        return GestureDetector(
-          onTap: () {
-            // Xử lý sự kiện khi người chơi chạm vào một ô trên bàn cờ.
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-            ),
-            child: piece != null ? Text(piece.type.toString()) : null,
-          ),
-        );
-      },
-      itemCount: 64,
-    );
-  }
+  List<Object> get props => [from, to];
 }
 ```
 
-9.	**Phát triển AI**
-Tạo một service cho AI để xử lý logic chơi cờ vua.
+### chess_state.dart
 
-**services/ai_service.dart**:
 ```dart
-class AIService {
-  // Hàm xử lý logic AI
-  void makeMove(Board board) {
-    // Logic cho nước đi của AI
-  }
+part of 'chess_bloc.dart';
+
+abstract class ChessState extends Equatable {
+  const ChessState();
+
+  @override
+  List<Object> get props => [];
 }
+
+class ChessInitial extends ChessState {}
+
+class ChessMoveMade extends ChessState {
+  final List<List<chess.Piece?>> board;
+
+  const ChessMoveMade(this.board);
+
+  @override
+  List<Object> get props => [board];
+}
+
+class ChessCheckmate extends ChessState {}
+
+class ChessDraw extends ChessState {}
 ```
 
-10.	**Phát triển tính năng chơi online**
-Sử dụng `http` hoặc các gói khác để giao tiếp với server cho phần chơi online. Bạn cần tạo backend server để quản lý các phiên chơi và gửi/nhận dữ liệu từ client.
-
-11.	 **Kiểm thử và hoàn thiện**
-- **Kiểm thử**: Chạy ứng dụng trên các thiết bị khác nhau để đảm bảo mọi chức năng hoạt động đúng.
-- **Hoàn thiện**: Thêm các tính năng bổ sung như lưu và tải game, cải thiện giao diện người dùng.
-
-12.	**Tài liệu và báo cáo**
-Cuối cùng, viết tài liệu và báo cáo về quá trình phát triển game của bạn. Bao gồm các quyết định thiết kế, các vấn đề gặp phải và cách giải quyết, cũng như hướng dẫn sử dụng game.
-
-Phát triển một game cờ vua bằng Flutter là một dự án đầy thú vị và thách thức. Chúc bạn thành công với đồ án luận văn tốt nghiệp của mình!
+Kế hoạch này giúp bạn bắt đầu phát triển một trò chơi cờ vua bằng Flutter với kiến trúc BLoC, đảm bảo ứng dụng có cấu trúc tốt và dễ bảo trì.
